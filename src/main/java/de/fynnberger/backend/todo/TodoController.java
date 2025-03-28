@@ -1,5 +1,6 @@
 package de.fynnberger.backend.todo;
 
+import de.fynnberger.backend.employee.EmployeeNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,12 @@ public class TodoController {
 
     @PostMapping("/todo")
     public ResponseEntity<Void> createTodo(@RequestBody CreationTodoDTO creationTodoDTO) {
-        todoService.createTodo(creationTodoDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        try {
+            todoService.createTodo(creationTodoDTO);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (EmployeeNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/todo/{id}")

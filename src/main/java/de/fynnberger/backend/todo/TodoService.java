@@ -3,6 +3,7 @@ package de.fynnberger.backend.todo;
 import de.fynnberger.backend.employee.Employee;
 import de.fynnberger.backend.employee.EmployeeRepository;
 import org.springframework.stereotype.Service;
+import de.fynnberger.backend.employee.EmployeeNotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,8 +28,8 @@ public class TodoService {
                 .collect(Collectors.toList());
     }
 
-    public void createTodo(CreationTodoDTO givenTodo) {
-        Employee employee = employeeRepository.findById(givenTodo.getEmployeeId()).orElseThrow(() -> new RuntimeException("Employee not found"));
+    public void createTodo(CreationTodoDTO givenTodo) throws EmployeeNotFoundException {
+        Employee employee = employeeRepository.findById(givenTodo.getEmployeeId()).orElseThrow(() -> new EmployeeNotFoundException(givenTodo.getEmployeeId()));
         Todo todo = new Todo(givenTodo, employee);
         todoRepository.save(todo);
     }
