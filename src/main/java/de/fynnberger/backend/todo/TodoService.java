@@ -36,7 +36,6 @@ public class TodoService {
     public void markCompletedAs(long id, boolean markCompleteAs) throws TodoNotFoundException {
         Todo todo = todoRepository.findById(id).orElseThrow(TodoNotFoundException::new);
         todo.setCompleted(markCompleteAs);
-        System.out.println(todo);
         todoRepository.save(todo);
     }
 
