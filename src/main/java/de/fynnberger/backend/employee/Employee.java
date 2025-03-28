@@ -1,11 +1,12 @@
 package de.fynnberger.backend.employee;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.fynnberger.backend.todo.Todo;
-import de.fynnberger.backend.todo.TodoDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Set;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -21,6 +22,9 @@ public class Employee {
     private String email;
     @Column(name = "image", columnDefinition = "TEXT")
     private String image;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Todo> todos;
 
     public Employee(EmployeeDTO employeeDTO) {
         this.firstName = employeeDTO.getFirstName();
